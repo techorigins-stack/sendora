@@ -38,7 +38,7 @@ export default function TermsAcceptance(): JSX.Element {
               id="modal-title"
               className="text-xl font-bold mb-4 text-stone-900 dark:text-stone-50"
             >
-              FilePizza Terms
+              Sendora Terms
             </h2>
 
             <div className="space-y-4 text-stone-700 dark:text-stone-300">

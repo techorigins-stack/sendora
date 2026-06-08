@@ -68,7 +68,7 @@ export default function ReportTermsViolationButton({
           className="text-sm text-red-600 dark:text-red-400 hover:underline transition-colors duration-200"
           aria-label="Report terms violation"
         >
-          Report suspicious pizza delivery
+          Report suspicious transfer
         </button>
       </div>
 
@@ -93,7 +93,7 @@ export default function ReportTermsViolationButton({
 
             <div className="space-y-4 text-stone-700 dark:text-stone-300">
               <p>
-                Before reporting this delivery, please note our FilePizza terms:
+                Before reporting this delivery, please note our Sendora terms:
               </p>
 
               <ul className="list-none space-y-3">
