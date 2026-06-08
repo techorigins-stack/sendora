@@ -1,6 +1,6 @@
 'use client'
 
-import React, { JSX, useState, useCallback, useEffect } from 'react'
+import React, { JSX, useState, useCallback, useEffect, useRef } from 'react'
 import { useDownloader } from '../hooks/downloader/useDownloader'
 import PasswordField from './PasswordField'
 import UnlockButton from './UnlockButton'
@@ -14,6 +14,7 @@ import ReturnHome from './ReturnHome'
 import { pluralize } from '../utils/pluralize'
 import { ErrorMessage } from './ErrorMessage'
 import PastePreviewModal, { isPasteFile } from './PastePreviewModal'
+import { recordTransfer } from '../utils/transferHistory'
 
 interface FileInfo {
   fileName: string
@@ -409,6 +410,25 @@ export default function Downloader({
       setShowPasteModal(true)
     }
   }, [isDone, isPasteTransfer])
+
+  // Record a received transfer in the local, private history (once, on completion).
+  const recordedReceiveRef = useRef(false)
+  useEffect(() => {
+    if (recordedReceiveRef.current || !isDone || !filesInfo?.length) return
+    recordedReceiveRef.current = true
+    const label = isPasteTransfer
+      ? 'Text snippet'
+      : filesInfo.length === 1
+        ? filesInfo[0].fileName
+        : `${filesInfo.length} files`
+    recordTransfer({
+      id: `recv-${uploaderPeerID}`,
+      role: 'receive',
+      label,
+      fileCount: filesInfo.length,
+      totalBytes: totalSize || 0,
+    })
+  }, [isDone, filesInfo, isPasteTransfer, uploaderPeerID, totalSize])
 
   const hasResumableProgress =
     !ignoreSavedProgress && Object.values(resumeOffsets).some((o) => o > 0)

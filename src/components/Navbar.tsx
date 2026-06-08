@@ -3,6 +3,7 @@ import { Link } from 'next-view-transitions'
 import Wordmark from './Wordmark'
 import { ModeToggle } from './ModeToggle'
 import GitHubStarButton from './GitHubStarButton'
+import TransferHistoryButton from './TransferHistoryButton'
 
 export default function Navbar(): JSX.Element {
   return (
@@ -23,7 +24,8 @@ export default function Navbar(): JSX.Element {
         </Link>
 
         {/* right controls */}
-        <div className="flex-1 flex items-center gap-2.5 justify-end">
+        <div className="flex-1 flex items-center gap-1 justify-end">
+          <TransferHistoryButton />
           <ModeToggle />
         </div>
       </div>

@@ -20,6 +20,7 @@ import FeatureMenu from '../components/FeatureMenu'
 import StatsBar from '../components/StatsBar'
 import WhatIsSendora from '../components/WhatIsSendora'
 import FAQ from '../components/FAQ'
+import TransferOptions from '../components/TransferOptions'
 
 function PageWrapper({ children }: { children: React.ReactNode }): JSX.Element {
   return (
@@ -83,6 +84,10 @@ function ConfirmUploadState({
   onStart,
   onRemoveFile,
   onAddFiles,
+  expiryMinutes,
+  burnAfterDownload,
+  onChangeExpiry,
+  onChangeBurn,
 }: {
   uploadedFiles: UploadedFile[]
   password: string
@@ -91,6 +96,10 @@ function ConfirmUploadState({
   onStart: () => void
   onRemoveFile: (index: number) => void
   onAddFiles: (files: UploadedFile[]) => void
+  expiryMinutes: number | null
+  burnAfterDownload: boolean
+  onChangeExpiry: (m: number | null) => void
+  onChangeBurn: (b: boolean) => void
 }): JSX.Element {
   const fileListData = useUploaderFileListData(uploadedFiles)
   return (
@@ -102,6 +111,12 @@ function ConfirmUploadState({
       </TitleText>
       <UploadFileList files={fileListData} onRemove={onRemoveFile} />
       <PasswordField value={password} onChange={onChangePassword} />
+      <TransferOptions
+        expiryMinutes={expiryMinutes}
+        burnAfterDownload={burnAfterDownload}
+        onChangeExpiry={onChangeExpiry}
+        onChangeBurn={onChangeBurn}
+      />
       <div className="flex space-x-4">
         <CancelButton onClick={onCancel} />
         <StartButton onClick={onStart} />
@@ -114,10 +129,14 @@ function UploadingState({
   uploadedFiles,
   password,
   onStop,
+  expiryMinutes,
+  burnAfterDownload,
 }: {
   uploadedFiles: UploadedFile[]
   password: string
   onStop: () => void
+  expiryMinutes: number | null
+  burnAfterDownload: boolean
 }): JSX.Element {
   return (
     <PageWrapper>
@@ -128,7 +147,13 @@ function UploadingState({
         Leave this tab open. Sendora does not store files.
       </SubtitleText>
       <WebRTCPeerProvider>
-        <Uploader files={uploadedFiles} password={password} onStop={onStop} />
+        <Uploader
+          files={uploadedFiles}
+          password={password}
+          onStop={onStop}
+          expiryMinutes={expiryMinutes}
+          burnAfterDownload={burnAfterDownload}
+        />
       </WebRTCPeerProvider>
     </PageWrapper>
   )
@@ -138,6 +163,8 @@ export default function UploadPage(): JSX.Element {
   const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([])
   const [password, setPassword] = useState('')
   const [uploading, setUploading] = useState(false)
+  const [expiryMinutes, setExpiryMinutes] = useState<number | null>(null)
+  const [burnAfterDownload, setBurnAfterDownload] = useState(false)
 
   const handleDrop = useCallback((files: UploadedFile[]): void => {
     setUploadedFiles(files)
@@ -182,6 +209,10 @@ export default function UploadPage(): JSX.Element {
         onStart={handleStart}
         onRemoveFile={handleRemoveFile}
         onAddFiles={handleAddFiles}
+        expiryMinutes={expiryMinutes}
+        burnAfterDownload={burnAfterDownload}
+        onChangeExpiry={setExpiryMinutes}
+        onChangeBurn={setBurnAfterDownload}
       />
     )
   }
@@ -191,6 +222,8 @@ export default function UploadPage(): JSX.Element {
       uploadedFiles={uploadedFiles}
       password={password}
       onStop={handleStop}
+      expiryMinutes={expiryMinutes}
+      burnAfterDownload={burnAfterDownload}
     />
   )
 }
