@@ -1,0 +1,123 @@
+@import 'tailwindcss';
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --animate-spin-slow: spin 16s linear infinite;
+  --animate-shimmer: shimmer 2s ease-in-out infinite;
+}
+
+/* Sendora brand tokens — modern indigo/violet system */
+:root {
+  --snd-bg: #ffffff;
+  --snd-bg-subtle: #f4f5fb;
+  --snd-border: #e5e7f2;
+  --snd-text: #0e1116;
+  --snd-text-muted: #5b6472;
+  --snd-accent: #6366f1;      /* indigo-500 */
+  --snd-accent-warm: #8b5cf6; /* violet-500 */
+  --snd-glow: rgba(99, 102, 241, 0.16);
+  --hljs-bg: #f7f8fc;
+}
+
+.dark {
+  --snd-bg: #0b0d12;          /* deep slate near-black */
+  --snd-bg-subtle: #141823;   /* elevated surface */
+  --snd-border: #242b3d;      /* cool dark border */
+  --snd-text: #eef1f7;        /* soft off-white */
+  --snd-text-muted: #97a1b4;  /* cool muted slate */
+  --snd-accent: #818cf8;      /* indigo-400 — glows in dark */
+  --snd-accent-warm: #a78bfa; /* violet-400 */
+  --snd-glow: rgba(129, 140, 248, 0.22);
+}
+
+html {
+  height: 100dvh;
+  background-color: var(--snd-bg);
+  color: var(--snd-text);
+}
+
+body {
+  min-height: 100dvh;
+  background-color: var(--snd-bg);
+}
+
+@keyframes shimmer {
+  0%   { transform: translateX(-100%) skewX(-12deg); }
+  100% { transform: translateX(250%) skewX(-12deg); }
+}
+
+#__next {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+}
+
+:root {
+  --text-title:    1rem;       /* 16px — page titles */
+  --text-body:     0.875rem;   /* 14px — body / labels */
+  --text-meta:     0.75rem;    /* 12px — hashes, captions, hints */
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 2.5rem;           /* 40px */
+  padding: 0 1.25rem;
+  font-size: var(--text-body);
+  font-weight: 600;
+  border-radius: 0.5rem;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background-color 0.15s, opacity 0.15s, transform 0.1s;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: #fff;
+  box-shadow: 0 6px 18px -6px var(--snd-glow);
+}
+.btn-primary:hover  { background: linear-gradient(135deg, #4f46e5, #7c3aed); }
+.btn-primary:active { transform: scale(0.98); }
+.btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* Secondary: outlined — Cancel, Stop, secondary actions */
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 2.5rem;
+  padding: 0 1.25rem;
+  font-size: var(--text-body);
+  font-weight: 600;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.15s, border-color 0.15s, transform 0.1s;
+  background: transparent;
+  border: 1px solid;
+  border-color: #d7daea;          /* indigo-tinted border */
+  color: #3a3f57;
+}
+.dark .btn-secondary {
+  border-color: #2f3753;
+  color: #d8def0;
+}
+.btn-secondary:hover  { background-color: rgba(99,102,241,0.10); border-color: #6366f1; }
+.btn-secondary:active { transform: scale(0.98); }
+
+/* Ghost: no border — low-priority text actions (Cancel in dropzone, Start over) */
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 2.5rem;
+  padding: 0 1rem;
+  font-size: var(--text-body);
+  font-weight: 500;
+  border-radius: 0.5rem;
+  border: none;
+  cursor: pointer;
+  transition: color 0.15s;
+  background: transparent;
+  color: #78716c;                 /* stone-500 */
+}
+.dark .btn-ghost { color: #a8a29e; }
+.btn-ghost:hover { color: #1c1917; }
+.dark .btn-ghost:hover { color: #f5f5f4; }
