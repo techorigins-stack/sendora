@@ -9,7 +9,8 @@
   "scripts": {
     "dev": "next",
     "dev:full": "docker compose up redis coturn -d && COTURN_ENABLED=true REDIS_URL=redis://localhost:6379 next",
-    "build": "next build && cp -r public .next/standalone/ && cp -r .next/static .next/standalone/.next/",
+    "build": "next build",
+    "build:standalone": "NEXT_OUTPUT_STANDALONE=true next build && cp -r public .next/standalone/ && cp -r .next/static .next/standalone/.next/",
     "start": "next start",
     "start:peerjs": "./bin/peerjs.js",
     "lint:check": "eslint 'src/**/*.{ts,tsx}'",
