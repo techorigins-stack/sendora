@@ -1,6 +1,6 @@
 import 'server-only'
 import config from './config'
-import { Redis, getRedisClient } from './redisClient'
+import { Redis, getRedisClient, getRedisURL } from './redisClient'
 import { generateShortSlug, generateLongSlug } from './slugs'
 import crypto from 'crypto'
 import { z } from 'zod'
@@ -296,12 +296,16 @@ declare global {
 
 export function getOrCreateChannelRepo(): ChannelRepo {
   if (!global._channelRepo) {
-    if (process.env.REDIS_URL) {
+    if (getRedisURL()) {
       global._channelRepo = new RedisChannelRepo()
       console.log('[ChannelRepo] Using Redis storage')
     } else {
       global._channelRepo = new MemoryChannelRepo()
-      console.log('[ChannelRepo] Using in-memory storage')
+      console.warn(
+        '[ChannelRepo] Using in-memory storage — NOT shared across serverless ' +
+          'instances. Set REDIS_URL (or attach a Vercel Redis/Upstash store) ' +
+          'for reliable transfers in production.',
+      )
     }
   }
   return global._channelRepo
